@@ -15,8 +15,42 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from mainapp import views
+from rest_framework.routers import DefaultRouter
+
+from rest_framework import permissions
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="inventory",
+        default_version="v1",
+        description="inventory description",
+        terms_of_service="https://www.promena.net/en",
+        contact=openapi.Contact(email="promena@gmail.com"),
+        license=openapi.License(name="Promena License")
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
+router = DefaultRouter()
+router.register("Inventorymodel", views.Inventoryapi)
+router.register("Ordermodel", views.Orderapi)
+router.register("Employees", views.Employeesapi)
+router.register("Departments", views.Departmentsapi)
+router.register("Roles", views.Rolesapi)
+router.register("customer_management", views.customer_managementapi)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('',include('mainapp.urls'))
+    # path("Inventorymodel", views.Inventoryapi)
+    # path("Ordermodel", views.Orderapi)
+    path('', include(router.urls)),
+    path('swagger', schema_view.with_ui('swagger', cache_timeout=0)),
+    path('swagger-docs', schema_view.with_ui('redoc', cache_timeout=0))
+
 ]
+
+
