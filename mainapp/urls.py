@@ -1,7 +1,11 @@
 from django.urls import path,include
+from rest_framework.routers import DefaultRouter
 
-from mainapp.views import home
+from mainapp.models import Roles
+# from mainapp.views import home, Employee
+from mainapp.views import roles
+router = DefaultRouter()
 
 urlpatterns = [
-    path('',home),
+    path('',roles.as_view()),
 ]
